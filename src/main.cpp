@@ -20,13 +20,13 @@
 #define TONE_PIN 27        // D27 25 & 26 are DAC0 and 1
 #define APPLICATION_PIN 16 // RX2 pin
 
-#define PIN_LED    21
-#define NUM_LEDS   1
+#define PIN_LED 21
+#define NUM_LEDS 1
 
-#define SEND_PWM_BY_TIMER         // Disable carrier PWM generation in software and use (restricted) hardware PWM.
-//#define USE_NO_SEND_PWM           // Use no carrier PWM, just simulate an active low receiver signal. Overrides SEND_PWM_BY_TIMER definition
-//#define NO_LED_FEEDBACK_CODE      // Saves 566 bytes program memory
-//#define USE_OPEN_DRAIN_OUTPUT_FOR_SEND_PIN // Use or simulate open drain output mode at send pin. Attention, active state of open drain is LOW, so connect the send LED between positive supply and send pin!
+#define SEND_PWM_BY_TIMER // Disable carrier PWM generation in software and use (restricted) hardware PWM.
+// #define USE_NO_SEND_PWM           // Use no carrier PWM, just simulate an active low receiver signal. Overrides SEND_PWM_BY_TIMER definition
+// #define NO_LED_FEEDBACK_CODE      // Saves 566 bytes program memory
+// #define USE_OPEN_DRAIN_OUTPUT_FOR_SEND_PIN // Use or simulate open drain output mode at send pin. Attention, active state of open drain is LOW, so connect the send LED between positive supply and send pin!
 
 #include <IRremote.hpp>
 
@@ -34,8 +34,8 @@
 #include <FastLED.h>
 
 CRGB leds[NUM_LEDS];
-uint8_t led_ih             = 0;
-uint8_t led_status         = 0;
+uint8_t led_ih = 0;
+uint8_t led_status = 0;
 String led_status_string[] = {"Rainbow", "Red", "Green", "Blue"};
 
 // This sketch uses the PROGMEM mechanism to put constant data into flash memory
@@ -43,66 +43,69 @@ String led_status_string[] = {"Rainbow", "Red", "Green", "Blue"};
 // memory and "a lot" of flash memory, and the PROGMEM feature locates large
 // static dato to flash memory. In order not to use the PROGMEM feature,
 // uncomment the following two lines:
-//#define PROGMEM /* nothing */
-//#define sendRaw_P sendRaw
+// #define PROGMEM /* nothing */
+// #define sendRaw_P sendRaw
 // Static data for the commands
 static unsigned int no_sends = 1U;
 
-void setup() {
-    M5Cardputer.begin();
-    M5Cardputer.Lcd.begin();
-    FastLED.addLeds<WS2812, PIN_LED, GRB>(leds, NUM_LEDS);
+void setup()
+{
+  M5Cardputer.begin();
+  M5Cardputer.Lcd.begin();
+  FastLED.addLeds<WS2812, PIN_LED, GRB>(leds, NUM_LEDS);
 
-    IrSender.begin(IR_SEND_PIN);
-    disableLEDFeedback(); // Disable feedback LED at default feedback LED pin
+  IrSender.begin(IR_SEND_PIN);
+  disableLEDFeedback(); // Disable feedback LED at default feedback LED pin
 }
 
 // A pretty silly main loop; feel free to replace by something more inspired.
-void loop() {
-    Serial.println(F("Enter number of signal to send (1 .. 9)"));
-    long commandno = Serial.parseInt();
+void loop()
+{
+  Serial.println(F("Enter number of signal to send (1 .. 9)"));
+  long commandno = Serial.parseInt();
 
-    // Uncomment if desired
-    /*
-    Serial.print(F("Enter number of times to send (default "));
-    Serial.print(no_sends);
-    Serial.print("): ");
-    unsigned int answ = Serial.parseInt();
-    if (answ != 0U)
-        no_sends = answ;
-    */
+  // Uncomment if desired
+  /*
+  Serial.print(F("Enter number of times to send (default "));
+  Serial.print(no_sends);
+  Serial.print("): ");
+  unsigned int answ = Serial.parseInt();
+  if (answ != 0U)
+      no_sends = answ;
+  */
 
-    switch (commandno) {
-    case 1L: // 2
-        IrSender.sendNEC(128U, 4U, no_sends - 1);
-        break;
-    case 2L: // 3
-        IrSender.sendNEC(128U, 6U, no_sends - 1);
-        break;
-    case 3L: // pip
-        IrSender.sendNEC(128U, 10U, no_sends - 1);
-        break;
-    case 4L: // 2$1
-        IrSender.sendNEC(128U, 12U, no_sends - 1);
-        break;
-    case 5L: // 5.1
-        IrSender.sendNEC(128U, 13U, no_sends - 1);
-        break;
-    case 6L: // Unknown
-        IrSender.sendNEC(128U, 14U, no_sends - 1);
-        break;
-    case 7L: // 1
-        IrSender.sendNEC(128U, 26U, no_sends - 1);
-        break;
-    case 8L: // sel
-        IrSender.sendNEC(128U, 27U, no_sends - 1);
-        break;
-    case 9L: // enter
-        IrSender.sendNEC(128U, 31U, no_sends - 1);
-        break;
+  switch (commandno)
+  {
+  case 1L: // 2
+    IrSender.sendNEC(128U, 4U, no_sends - 1);
+    break;
+  case 2L: // 3
+    IrSender.sendNEC(128U, 6U, no_sends - 1);
+    break;
+  case 3L: // pip
+    IrSender.sendNEC(128U, 10U, no_sends - 1);
+    break;
+  case 4L: // 2$1
+    IrSender.sendNEC(128U, 12U, no_sends - 1);
+    break;
+  case 5L: // 5.1
+    IrSender.sendNEC(128U, 13U, no_sends - 1);
+    break;
+  case 6L: // Unknown
+    IrSender.sendNEC(128U, 14U, no_sends - 1);
+    break;
+  case 7L: // 1
+    IrSender.sendNEC(128U, 26U, no_sends - 1);
+    break;
+  case 8L: // sel
+    IrSender.sendNEC(128U, 27U, no_sends - 1);
+    break;
+  case 9L: // enter
+    IrSender.sendNEC(128U, 31U, no_sends - 1);
+    break;
 
-    default:
-        Serial.println(F("Invalid number entered, try again"));
-        break;
-    }
+  default:
+    Serial.println(F("Invalid number entered, try again"));
+    break;
+  }
 }
