@@ -50,29 +50,35 @@ static unsigned int no_sends = 1U;
 
 void setup()
 {
-  M5Cardputer.begin();
+  auto cfg = M5.config();
+  M5Cardputer.begin(cfg);
   M5Cardputer.Lcd.begin();
   FastLED.addLeds<WS2812, PIN_LED, GRB>(leds, NUM_LEDS);
 
   IrSender.begin(IR_SEND_PIN);
   disableLEDFeedback(); // Disable feedback LED at default feedback LED pin
+  M5Cardputer.Display.setTextSize(2.f);
+  M5Cardputer.Display.println("Enter command");
 }
 
 // A pretty silly main loop; feel free to replace by something more inspired.
 void loop()
 {
-  Serial.println(F("Enter number of signal to send (1 .. 9)"));
-  long commandno = Serial.parseInt();
+  M5Cardputer.update();
 
-  // Uncomment if desired
-  /*
-  Serial.print(F("Enter number of times to send (default "));
-  Serial.print(no_sends);
-  Serial.print("): ");
-  unsigned int answ = Serial.parseInt();
-  if (answ != 0U)
-      no_sends = answ;
-  */
+  int commandno = -1;
+  for (char key='0'; key<='9'; ++key)
+  {
+    if (M5Cardputer.Keyboard.isKeyPressed(key))
+    {
+      leds[0] = CRGB::Red;
+      FastLED.show();
+      M5Cardputer.Display.setCursor(0, 20);
+      M5Cardputer.Display.printf("Key: %c\n", key);
+      commandno = key - (int)'0' + 1;
+      break;
+    }
+  }
 
   switch (commandno)
   {
@@ -105,7 +111,9 @@ void loop()
     break;
 
   default:
-    Serial.println(F("Invalid number entered, try again"));
     break;
   }
+
+  leds[0] = CRGB::Blue;
+  FastLED.show();
 }
