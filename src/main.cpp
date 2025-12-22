@@ -15,8 +15,8 @@
 #endif
 
 // -=-=- IR SETUP -=-=-
-#define IR_RECEIVE_PIN 1   // D1
-#define IR_SEND_PIN 44     // D44
+// #define IR_RECEIVE_PIN 1   // D1
+#define IR_TX_PIN 44     // D44
 #define TONE_PIN 27        // D27 25 & 26 are DAC0 and 1
 #define APPLICATION_PIN 16 // RX2 pin
 
@@ -55,8 +55,9 @@ void setup()
   M5Cardputer.Lcd.begin();
   FastLED.addLeds<WS2812, PIN_LED, GRB>(leds, NUM_LEDS);
 
-  IrSender.begin(IR_SEND_PIN);
-  disableLEDFeedback(); // Disable feedback LED at default feedback LED pin
+  IrSender.begin(DISABLE_LED_FEEDBACK);
+  IrSender.setSendPin(IR_TX_PIN);
+
   M5Cardputer.Display.setTextSize(2.f);
   M5Cardputer.Display.println("Enter command");
 }
@@ -71,11 +72,9 @@ void loop()
   {
     if (M5Cardputer.Keyboard.isKeyPressed(key))
     {
-      leds[0] = CRGB::Red;
-      FastLED.show();
       M5Cardputer.Display.setCursor(0, 20);
       M5Cardputer.Display.printf("Key: %c\n", key);
-      commandno = key - (int)'0' + 1;
+      commandno = key - (int)'0';
       break;
     }
   }
@@ -83,31 +82,58 @@ void loop()
   switch (commandno)
   {
   case 1L: // 2
+    leds[0] = CRGB::Red;
+    FastLED.show();
     IrSender.sendNEC(128U, 4U, no_sends - 1);
+    delay(1000);
     break;
   case 2L: // 3
+    leds[0] = CRGB::Red;
+    FastLED.show();
     IrSender.sendNEC(128U, 6U, no_sends - 1);
+    delay(1000);
     break;
   case 3L: // pip
+    leds[0] = CRGB::Red;
+    FastLED.show();
     IrSender.sendNEC(128U, 10U, no_sends - 1);
+    delay(1000);
     break;
   case 4L: // 2$1
+    leds[0] = CRGB::Red;
+    FastLED.show();
     IrSender.sendNEC(128U, 12U, no_sends - 1);
+    delay(1000);
     break;
   case 5L: // 5.1
+    leds[0] = CRGB::Red;
+    FastLED.show();
     IrSender.sendNEC(128U, 13U, no_sends - 1);
+    delay(1000);
     break;
   case 6L: // Unknown
+    leds[0] = CRGB::Red;
+    FastLED.show();
     IrSender.sendNEC(128U, 14U, no_sends - 1);
+    delay(1000);
     break;
   case 7L: // 1
+    leds[0] = CRGB::Red;
+    FastLED.show();
     IrSender.sendNEC(128U, 26U, no_sends - 1);
+    delay(1000);
     break;
   case 8L: // sel
+    leds[0] = CRGB::Red;
+    FastLED.show();
     IrSender.sendNEC(128U, 27U, no_sends - 1);
+    delay(1000);
     break;
   case 9L: // enter
+    leds[0] = CRGB::Red;
+    FastLED.show();
     IrSender.sendNEC(128U, 31U, no_sends - 1);
+    delay(1000);
     break;
 
   default:
