@@ -62,9 +62,46 @@ void setup()
   M5Cardputer.Display.println("Enter command");
 }
 
+constexpr size_t kNameLen = 16;
+struct CodeInfo
+{
+  char Key;
+  uint16_t Code;
+  char Name[kNameLen];
+};
+
+constexpr size_t NumCodes = 8;
+CodeInfo g_Codes[NumCodes] = 
+{
+  {'1', 26U, "HDMI1 "},
+  {'2', 1U,  "HDMI2 "},
+  {'3', 2U,  "HDMI3 "},
+  {'4', 3U,  "HDMI4 "},
+  {'5', 5U,  "HDMI5 "},
+  {'6', 12U, "2.0 ch"},
+  {'7', 13U, "5.1 ch"},
+  {'8', 14U, "TV ch "},
+};
+
 void loop()
 {
   M5Cardputer.update();
+
+  for (size_t i=0; i<NumCodes; ++i)
+  {
+    if (M5Cardputer.Keyboard.isKeyPressed(g_Codes[i].Key))
+    {
+      M5Cardputer.Display.setCursor(0, 20);
+      M5Cardputer.Display.printf("Key: %c\n", g_Codes[i].Key);
+      M5Cardputer.Display.printf("Command: %s\n", g_Codes[i].Name);
+
+      leds[0] = CRGB::Red;
+      FastLED.show();
+
+      IrSender.sendNEC(128U | (126U << 8), g_Codes[i].Code, no_sends - 1);
+      delay(1000);
+    }
+  }
 
   int commandno = -1;
   for (char key='0'; key<='9'; ++key)
@@ -76,88 +113,6 @@ void loop()
       commandno = key - (int)'0';
       break;
     }
-  }
-
-  /*
-  Actual codes list:
-  HDMI1: 26U
-  HDMI2: 1U
-  HDMI3: 2U
-  HDMI4: 3U
-  HDMI5: 5U
-  2.0 channel: 12U
-  5.1 channel: 13U
-  (TV is possibly 14U)
-  */
-
-  switch (commandno)
-  {
-  case 1L: // 2
-    leds[0] = CRGB::Red;
-    FastLED.show();
-    M5Cardputer.Display.printf("Command '2'   \n");
-    IrSender.sendNEC(128U | (126U << 8), 4U, no_sends - 1);
-    delay(1000);
-    break;
-  case 2L: // 3
-    leds[0] = CRGB::Red;
-    FastLED.show();
-    M5Cardputer.Display.printf("Command '3'   \n");
-    IrSender.sendNEC(128U | (126U << 8), 6U, no_sends - 1);
-    delay(1000);
-    break;
-  case 3L: // pip
-    leds[0] = CRGB::Red;
-    FastLED.show();
-    M5Cardputer.Display.printf("Command 'pip'  \n");
-    IrSender.sendNEC(128U | (126U << 8), 10U, no_sends - 1);
-    delay(1000);
-    break;
-  case 4L: // 2$1
-    leds[0] = CRGB::Red;
-    FastLED.show();
-    M5Cardputer.Display.printf("Command '2$1'  \n");
-    IrSender.sendNEC(128U | (126U << 8), 12U, no_sends - 1);
-    delay(1000);
-    break;
-  case 5L: // 5.1
-    leds[0] = CRGB::Red;
-    FastLED.show();
-    M5Cardputer.Display.printf("Command '5.1'  \n");
-    IrSender.sendNEC(128U | (126U << 8), 13U, no_sends - 1);
-    delay(1000);
-    break;
-  case 6L: // Unknown
-    leds[0] = CRGB::Red;
-    FastLED.show();
-    M5Cardputer.Display.printf("Command '?'    \n");
-    IrSender.sendNEC(128U | (126U << 8), 14U, no_sends - 1);
-    delay(1000);
-    break;
-  case 7L: // 1
-    leds[0] = CRGB::Red;
-    FastLED.show();
-    M5Cardputer.Display.printf("Command '1'    \n");
-    IrSender.sendNEC(128U | (126U << 8), 26U, no_sends - 1);
-    delay(1000);
-    break;
-  case 8L: // sel
-    leds[0] = CRGB::Red;
-    FastLED.show();
-    M5Cardputer.Display.printf("Command 'sel'  \n");
-    IrSender.sendNEC(128U | (126U << 8), 27U, no_sends - 1);
-    delay(1000);
-    break;
-  case 9L: // enter
-    leds[0] = CRGB::Red;
-    FastLED.show();
-    M5Cardputer.Display.printf("Command 'enter'\n");
-    IrSender.sendNEC(128U | (126U << 8), 31U, no_sends - 1);
-    delay(1000);
-    break;
-
-  default:
-    break;
   }
 
   leds[0] = CRGB::Blue;
