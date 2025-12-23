@@ -62,7 +62,6 @@ void setup()
   M5Cardputer.Display.println("Enter command");
 }
 
-// A pretty silly main loop; feel free to replace by something more inspired.
 void loop()
 {
   M5Cardputer.update();
@@ -79,59 +78,80 @@ void loop()
     }
   }
 
+  /*
+  Actual codes list:
+  HDMI1: 26U
+  HDMI2: 1U
+  HDMI3: 2U
+  HDMI4: 3U
+  HDMI5: 5U
+  2.0 channel: 12U
+  5.1 channel: 13U
+  (TV is possibly 14U)
+  */
+
   switch (commandno)
   {
   case 1L: // 2
     leds[0] = CRGB::Red;
     FastLED.show();
+    M5Cardputer.Display.printf("Command '2'   \n");
     IrSender.sendNEC(128U | (126U << 8), 4U, no_sends - 1);
     delay(1000);
     break;
   case 2L: // 3
     leds[0] = CRGB::Red;
     FastLED.show();
+    M5Cardputer.Display.printf("Command '3'   \n");
     IrSender.sendNEC(128U | (126U << 8), 6U, no_sends - 1);
     delay(1000);
     break;
   case 3L: // pip
     leds[0] = CRGB::Red;
     FastLED.show();
+    M5Cardputer.Display.printf("Command 'pip'  \n");
     IrSender.sendNEC(128U | (126U << 8), 10U, no_sends - 1);
     delay(1000);
     break;
   case 4L: // 2$1
     leds[0] = CRGB::Red;
     FastLED.show();
+    M5Cardputer.Display.printf("Command '2$1'  \n");
     IrSender.sendNEC(128U | (126U << 8), 12U, no_sends - 1);
     delay(1000);
     break;
   case 5L: // 5.1
     leds[0] = CRGB::Red;
     FastLED.show();
+    M5Cardputer.Display.printf("Command '5.1'  \n");
     IrSender.sendNEC(128U | (126U << 8), 13U, no_sends - 1);
     delay(1000);
     break;
   case 6L: // Unknown
     leds[0] = CRGB::Red;
     FastLED.show();
+    M5Cardputer.Display.printf("Command '?'    \n");
     IrSender.sendNEC(128U | (126U << 8), 14U, no_sends - 1);
     delay(1000);
     break;
   case 7L: // 1
     leds[0] = CRGB::Red;
     FastLED.show();
+    M5Cardputer.Display.printf("Command '1'    \n");
     IrSender.sendNEC(128U | (126U << 8), 26U, no_sends - 1);
     delay(1000);
     break;
   case 8L: // sel
     leds[0] = CRGB::Red;
     FastLED.show();
+    M5Cardputer.Display.printf("Command 'sel'  \n");
     IrSender.sendNEC(128U | (126U << 8), 27U, no_sends - 1);
     delay(1000);
     break;
   case 9L: // enter
     leds[0] = CRGB::Red;
     FastLED.show();
+    M5Cardputer.Display.printf("Command 'enter'\n");
     IrSender.sendNEC(128U | (126U << 8), 31U, no_sends - 1);
     delay(1000);
     break;
