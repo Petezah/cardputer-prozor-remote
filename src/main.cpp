@@ -84,55 +84,55 @@ void loop()
   case 1L: // 2
     leds[0] = CRGB::Red;
     FastLED.show();
-    IrSender.sendNEC(128U, 4U, no_sends - 1);
+    IrSender.sendNEC(128U | (126U << 8), 4U, no_sends - 1);
     delay(1000);
     break;
   case 2L: // 3
     leds[0] = CRGB::Red;
     FastLED.show();
-    IrSender.sendNEC(128U, 6U, no_sends - 1);
+    IrSender.sendNEC(128U | (126U << 8), 6U, no_sends - 1);
     delay(1000);
     break;
   case 3L: // pip
     leds[0] = CRGB::Red;
     FastLED.show();
-    IrSender.sendNEC(128U, 10U, no_sends - 1);
+    IrSender.sendNEC(128U | (126U << 8), 10U, no_sends - 1);
     delay(1000);
     break;
   case 4L: // 2$1
     leds[0] = CRGB::Red;
     FastLED.show();
-    IrSender.sendNEC(128U, 12U, no_sends - 1);
+    IrSender.sendNEC(128U | (126U << 8), 12U, no_sends - 1);
     delay(1000);
     break;
   case 5L: // 5.1
     leds[0] = CRGB::Red;
     FastLED.show();
-    IrSender.sendNEC(128U, 13U, no_sends - 1);
+    IrSender.sendNEC(128U | (126U << 8), 13U, no_sends - 1);
     delay(1000);
     break;
   case 6L: // Unknown
     leds[0] = CRGB::Red;
     FastLED.show();
-    IrSender.sendNEC(128U, 14U, no_sends - 1);
+    IrSender.sendNEC(128U | (126U << 8), 14U, no_sends - 1);
     delay(1000);
     break;
   case 7L: // 1
     leds[0] = CRGB::Red;
     FastLED.show();
-    IrSender.sendNEC(128U, 26U, no_sends - 1);
+    IrSender.sendNEC(128U | (126U << 8), 26U, no_sends - 1);
     delay(1000);
     break;
   case 8L: // sel
     leds[0] = CRGB::Red;
     FastLED.show();
-    IrSender.sendNEC(128U, 27U, no_sends - 1);
+    IrSender.sendNEC(128U | (126U << 8), 27U, no_sends - 1);
     delay(1000);
     break;
   case 9L: // enter
     leds[0] = CRGB::Red;
     FastLED.show();
-    IrSender.sendNEC(128U, 31U, no_sends - 1);
+    IrSender.sendNEC(128U | (126U << 8), 31U, no_sends - 1);
     delay(1000);
     break;
 
